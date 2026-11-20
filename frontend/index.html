@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visor SIG — Agro Medición Line Top</title>
+  <!-- Leaflet 1.9.4 -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+<header class="encabezado">
+  <div class="marca">
+    <svg class="logo" viewBox="0 0 64 64" aria-hidden="true">
+      <path d="M4 52 L24 20 L34 34 L42 24 L60 52 Z" fill="#8a8f96"/>
+      <path d="M24 20 L29 28 L24 26 L19 30 Z" fill="#fff" opacity=".8"/>
+      <line x1="46" y1="6" x2="46" y2="30" stroke="#b8902f" stroke-width="2"/>
+      <path d="M41 30 L51 30 L46 42 Z" fill="#c9a23f"/>
+    </svg>
+    <div>
+      <h1>Agro Medición <span>Line Top</span></h1>
+      <p>Visor SIG de proyectos topográficos — Quindío · CTM12 (EPSG:9377)</p>
+    </div>
+  </div>
+  <div id="estado-conexion" class="estado estado--espera" title="Estado de la conexión con PostgreSQL/PostGIS">
+    Conectando…
+  </div>
+</header>
+
+<main class="contenedor">
+  <!-- ============ PANEL LATERAL ============ -->
+  <aside class="panel">
+
+    <!-- F2 + F4: búsqueda y filtro combinado -->
+    <section class="tarjeta">
+      <h2><span class="etiqueta">F2 · F4</span> Buscar y filtrar proyectos</h2>
+      <label for="f-buscar">Código, nombre o cliente</label>
+      <input id="f-buscar" type="search" placeholder="ej. Cristalina, LT-2025…" maxlength="60">
+      <div class="fila-2">
+        <div>
+          <label for="f-municipio">Municipio</label>
+          <select id="f-municipio"><option value="">Todos</option></select>
+        </div>
+        <div>
+          <label for="f-anio">Año</label>
+          <select id="f-anio"><option value="">Todos</option></select>
+        </div>
+      </div>
+      <div class="fila-2">
+        <div>
+          <label for="f-tipo">Tipo de servicio</label>
+          <select id="f-tipo"><option value="">Todos</option></select>
+        </div>
+        <div>
+          <label for="f-estado">Estado</label>
+          <select id="f-estado"><option value="">Todos</option></select>
+        </div>
+      </div>
+      <div class="botones">
+        <button id="btn-filtrar" class="btn btn--primario">Aplicar</button>
+        <button id="btn-limpiar" class="btn">Limpiar</button>
+      </div>
+      <p id="resumen-filtro" class="nota"></p>
+      <label class="interruptor">
+        <input type="checkbox" id="chk-tematico">
+        <span>Mapa temático: hectáreas levantadas por municipio</span>
+      </label>
+      <div id="tabla-tematica" class="tabla-mini oculto"></div>
+    </section>
+
+    <!-- F2: ficha del proyecto seleccionado -->
+    <section class="tarjeta">
+      <h2><span class="etiqueta">F2</span> Ficha del proyecto</h2>
+      <div id="ficha" class="ficha vacio">Haga clic sobre un proyecto en el mapa o en la lista.</div>
+      <ul id="lista-proyectos" class="lista"></ul>
+    </section>
+
+    <!-- F3: consulta espacial -->
+    <section class="tarjeta">
+      <h2><span class="etiqueta">F3</span> Vértices IGAC cercanos al proyecto</h2>
+      <div class="fila-2">
+        <div>
+          <label for="f-radio">Radio (m)</label>
+          <input id="f-radio" type="number" min="100" max="100000" step="100" value="10000">
+        </div>
+        <div>
+          <label for="f-limite">Máx. vértices</label>
+          <input id="f-limite" type="number" min="1" max="20" value="5">
+        </div>
+      </div>
+      <button id="btn-cercanos" class="btn btn--primario" disabled>Buscar vértices cercanos</button>
+      <div id="resultado-cercanos" class="tabla-mini"></div>
+    </section>
+
+    <!-- F5: punto de amarre -->
+    <section class="tarjeta">
+      <h2><span class="etiqueta">F5</span> Punto de amarre</h2>
+      <label class="interruptor">
+        <input type="checkbox" id="chk-amarre">
+        <span>Activar: haga clic en el mapa para obtener coordenadas CTM12 y los 3 vértices más cercanos</span>
+      </label>
+    </section>
+
+    <!-- Evidencia: registro de peticiones HTTP -->
+    <section class="tarjeta">
+      <h2>Registro de peticiones HTTP</h2>
+      <ol id="registro-http" class="registro"></ol>
+    </section>
+  </aside>
+
+  <!-- ============ MAPA ============ -->
+  <section class="zona-mapa">
+    <div id="mapa"></div>
+    <div id="coordenadas" class="coordenadas">Lat —, Lon —</div>
+  </section>
+</main>
+
+<footer class="pie">
+  Desarrollado por Michael Andrei Gómez Becerra · Programación para SIG · Fuentes: IGAC — Red Geodésica Nacional y límites municipales
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<!-- Orden: api.js (peticiones HTTP) → mapa.js (Leaflet y capas) → app.js (interacciones) -->
+<script src="js/api.js"></script>
+<script src="js/mapa.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
