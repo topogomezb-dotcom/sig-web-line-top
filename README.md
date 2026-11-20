@@ -248,21 +248,31 @@ También se puede abrir `frontend/index.html` con *Live Server* (puerto 5500). E
 
 ## 9. Evidencias técnicas
 
-Las capturas están en `docs/evidencias/`:
+Las capturas se tomaron con la aplicación ejecutándose localmente (PostgreSQL 16.8 + PostGIS 3.5.2 en Windows) y están en `docs/evidencias/`.
 
-| # | Evidencia | Qué demuestra |
+| # | Archivo | Qué demuestra |
 |---|---|---|
-| 1 | `01_api_estado.png` — respuesta de `/api/estado` | Conexión real API ↔ PostgreSQL/PostGIS y conteo de registros |
-| 2 | `02_swagger_docs.png` — `/docs` con los endpoints | Endpoints disponibles |
-| 3 | `03_visor_f1.png` — visor con las tres capas | F1: representación en Leaflet |
-| 4 | `04_red_f12.png` — pestaña Red del navegador | Comunicación HTTP y respuesta GeoJSON |
-| 5 | `05_f3_visor.png` y `05_f3_pgadmin.png` | **F3 en el visor contrastada con la misma consulta en pgAdmin** |
-| 6 | `06_f2_ficha.png` | F2: ficha del proyecto |
-| 7 | `07_f4_tematico.png` | F4: filtro combinado y mapa temático |
-| 8 | `08_f5_amarre.png` | F5: punto de amarre |
-| 9 | `09_terminal_uvicorn.png` | Registro del servidor con las peticiones recibidas |
+| 1 | `01_api_estado.jpg` | `GET /api/estado`: conexión real API ↔ PostgreSQL/PostGIS y número de registros por tabla |
+| 2 | `02_swagger_docs.jpg` | Documentación automática de los endpoints (`/docs`) |
+| 3 | `03_visor_f1.jpg` | **F1**: municipios, vértices geodésicos y proyectos consultados desde PostGIS y dibujados en Leaflet |
+| 4 | `04_respuesta_geojson_f3.jpg` | Respuesta GeoJSON (`FeatureCollection` de `LineString`) de `GET /api/proyectos/3/vertices-cercanos?radio_m=10000&limite=5` |
+| 5 | `05_f3_visor.jpg` y `05_f3_pgadmin.jpg` | **F3 contrastada**: los vértices, distancias y azimuts del visor coinciden con la consulta V2 ejecutada directamente en pgAdmin |
+| 6 | `06_f2_ficha.jpg` | **F2**: ficha del proyecto (JOIN de 5 tablas, área CTM12 vs. elipsoidal, perímetro, centroide, equipos) |
+| 7 | `07_f4_tematico.jpg` | **F4**: filtro por tipo de servicio y mapa temático de hectáreas por municipio (`ST_Intersection`) |
+| 8 | `08_f5_amarre_y_registro_http.jpg` | **F5**: punto de amarre (CTM12 + 3 vértices más cercanos) y panel con el registro de peticiones HTTP |
 
----
+**Verificación independiente (F3, proyecto LT-2024-003, radio 10 km):**
+
+| Vértice | Distancia visor (m) | Distancia pgAdmin (m) | Azimut (°) |
+|---|---|---|---|
+| GPS-D-QN-25 | 693,78 | 693.78 | 239.1457 |
+| GPS-D-QN-24 | 962,39 | 962.39 | 26.5905 |
+| GPS-D-QN-23 | 1.242,43 | 1242.43 | 218.1497 |
+| GPS-D-QN-22 | 1.958,90 | 1958.90 | 260.2027 |
+| A132K-W | 2.260,37 | 2260.37 | 273.5592 |
+
+![F3 en el visor](docs/evidencias/05_f3_visor.jpg)
+![F3 en pgAdmin](docs/evidencias/05_f3_pgadmin.jpg)
 
 ## 10. Estructura del repositorio
 
